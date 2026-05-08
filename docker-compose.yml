@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   nextjs:
     build:
@@ -10,8 +8,6 @@ services:
       - "3070:3000"
     environment:
       NODE_ENV: production
-      # Add other production env variables here, e.g.:
-      # DATABASE_URL: your_database_url
-      # API_KEY: your_api_key
-    command: pnpm run start
+      NEXT_PUBLIC_API_URL: http://api.agritrade.gidraf.dev
+      NEXT_PUBLIC_WS_URL: ws://api.agritrade.gidraf.dev
     restart: unless-stopped

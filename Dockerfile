@@ -1,26 +1,22 @@
-# Use a lightweight Node image for production
 FROM node:20-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Install pnpm globally
-RUN npm install -g pnpm
+# Pin pnpm to v9 — last version compatible with Node 20
+RUN npm install -g pnpm@9
 
-# Copy package files
-COPY package.json pnpm-lock.yaml* ./
+# Copy lockfiles first (better layer caching)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install only production dependencies
-RUN pnpm install --frozen-lockfile --prod
+# Install ALL deps (devDeps needed for the build step)
+RUN pnpm install --frozen-lockfile
 
-# Copy the rest of the project
+# Copy source
 COPY . .
 
-# Build the project (if using Next.js or similar)
+# Build
 RUN pnpm run build
 
-# Expose production port
-EXPOSE 3070
+EXPOSE 3000
 
-# Default command for production
 CMD ["pnpm", "run", "start"]
