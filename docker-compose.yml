@@ -1,0 +1,14 @@
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: https://api.agritrade.gidraf.dev
+      NEXT_PUBLIC_WS_URL: wss://api.agritrade.gidraf.dev
+    ports:
+      - "3070:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
