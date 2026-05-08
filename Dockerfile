@@ -1,18 +1,26 @@
-# ---- Build Stage ----
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package.json package-lock.json* yarn.lock* ./
-RUN npm ci
-COPY . .
-RUN npm run build
+# Use a lightweight Node image for production
+FROM node:20-alpine
 
-# ---- Production Stage ----
-FROM node:20-alpine AS runner
+# Set working directory
 WORKDIR /app
-ENV NODE_ENV=production
-COPY --from=builder /app/.next .next
-COPY --from=builder /app/public public
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules node_modules
-EXPOSE 3000
-CMD ["npm", "start"]
+
+# Install pnpm globally
+RUN npm install -g pnpm
+
+# Copy package files
+COPY package.json pnpm-lock.yaml* ./
+
+# Install only production dependencies
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy the rest of the project
+COPY . .
+
+# Build the project (if using Next.js or similar)
+RUN pnpm run build
+
+# Expose production port
+EXPOSE 3070
+
+# Default command for production
+CMD ["pnpm", "run", "start"]
