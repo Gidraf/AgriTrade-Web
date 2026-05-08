@@ -136,8 +136,7 @@ export interface AuthTokens {
 }
 
 // ─── API Client ───────────────────────────────────────────────────────────────
-const BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-
+const BASE = "https://api.agritrade.gidraf.dev/api";
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("agritrade_token");

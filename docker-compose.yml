@@ -8,6 +8,6 @@ services:
       - "3070:3000"
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: http://api.agritrade.gidraf.dev
+      NEXT_PUBLIC_API_URL: https://api.agritrade.gidraf.dev
       NEXT_PUBLIC_WS_URL: ws://api.agritrade.gidraf.dev
     restart: unless-stopped
