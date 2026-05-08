@@ -6,7 +6,7 @@ WORKDIR /app
 RUN npm install -g pnpm@9
 
 # Copy lockfiles first (better layer caching)
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml ./
 
 # Install ALL deps (devDeps needed for the build step)
 RUN pnpm install --frozen-lockfile
